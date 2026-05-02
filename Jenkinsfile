@@ -8,9 +8,9 @@ pipeline {
     }
 
     environment {
-        AWS_REGION = "ap-northeast-1"
+        AWS_REGION = "ap-south-1"
         IMAGE_TAG  = "${env.BUILD_NUMBER}"
-        IMAGE_NAME = "508262720940.dkr.ecr.ap-northeast-1.amazonaws.com/moveinsync:${IMAGE_TAG}"
+        IMAGE_NAME = "711387119594.dkr.ecr.ap-south-1.amazonaws.com/moveinsync:${IMAGE_TAG}"
     }
 
     stages {
@@ -129,7 +129,7 @@ pipeline {
                 sh '''
                     aws ecr get-login-password --region $AWS_REGION \
                     | docker login --username AWS --password-stdin \
-                    508262720940.dkr.ecr.$AWS_REGION.amazonaws.com
+                    711387119594.dkr.ecr.$AWS_REGION.amazonaws.com
                 '''
             }
         }
