@@ -18,7 +18,7 @@ pipeline {
         // ── 1. Checkout ─────────────────────────────────────
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/ManojKRISHNAPPA/MoveInSync.git', branch: 'main'
+                git url: 'https://github.com/amithachar/MoveInSync.git', branch: 'main'
             }
         }
 
@@ -170,7 +170,7 @@ pipeline {
                     sh '''
                         rm -rf MoveInSync-gitops || true
 
-                        git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com/ManojKRISHNAPPA/MoveInSync-gitops.git
+                        git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com/amithachar/MoveInSync-gitops.git
                         cd MoveInSync-gitops/moveinsync
 
                         git config user.email "jenkins@ci.com"
