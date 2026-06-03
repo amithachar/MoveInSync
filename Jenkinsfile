@@ -52,7 +52,7 @@ pipeline {
             }
         }
 
-        ── 4. SonarQube ───────────────────────────────────
+        //── 4. SonarQube ───────────────────────────────────
         stage('SonarQube Analysis') {
             steps {
                 sh '''
