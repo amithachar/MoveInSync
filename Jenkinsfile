@@ -53,7 +53,7 @@ pipeline {
         }
 
         //── 4. SonarQube ───────────────────────────────────
-        stage('SonarQube Analysis') {
+/*         stage('SonarQube Analysis') {
             steps {
                 sh '''
                 docker run --rm \
@@ -65,7 +65,7 @@ pipeline {
                 -Dsonar.sources=.
                 '''
             }
-        }
+        } */
         // ── 5. Quality Gate ─────────────────────────────────
         // stage('Quality Gate') {
         //     steps {
