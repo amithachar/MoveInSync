@@ -30,10 +30,16 @@ pipeline {
             steps {
                 sh '''
                     apt-get update
-                    apt-get install -y docker.io
 
+                    apt-get install -y \
+                        docker.io \
+                        awscli
+
+                    echo "Docker:"
                     docker --version
-                    which docker
+
+                    echo "AWS:"
+                    aws --version
                 '''
             }
         }
