@@ -1,12 +1,11 @@
 #!/bin/bash
 # ──────────────────────────────────────────────────────────────────────────────
 # Trivy base-image vulnerability scanner — MoveInSync
-# Adapted from gameapp DevSecOps standards
 # ──────────────────────────────────────────────────────────────────────────────
 
 set -e
 
-# Extract the base image from the first FROM line in Dockerfile
+# Extract base image from Dockerfile
 DOCKER_IMAGE_NAME=$(grep -m1 '^FROM' Dockerfile | awk '{print $2}')
 
 if [[ -z "${DOCKER_IMAGE_NAME}" ]]; then
@@ -19,22 +18,44 @@ echo "  Trivy Base Image Scan"
 echo "  Image : ${DOCKER_IMAGE_NAME}"
 echo "=============================================="
 
-# ── Step 1: Scan for HIGH severity (informational — pipeline continues) ────────
+TRIVY_CMD="
+docker run --rm \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v \$HOME/.cache:/root/.cache \
+aquasec/trivy:latest
+"
+
+# ── Step 1: HIGH severity (informational) ─────────────────
 echo ""
 echo "[1/2] Scanning for HIGH severity vulnerabilities..."
-trivy image --exit-code 0 --severity HIGH --no-progress "${DOCKER_IMAGE_NAME}"
 
-# ── Step 2: Scan for CRITICAL severity (blocks pipeline if found) ─────────────
+$TRIVY_CMD image \
+--exit-code 0 \
+--severity HIGH \
+--no-progress \
+"${DOCKER_IMAGE_NAME}"
+
+# ── Step 2: CRITICAL severity (block pipeline) ────────────
 echo ""
 echo "[2/2] Scanning for CRITICAL severity vulnerabilities..."
-trivy image --exit-code 1 --severity CRITICAL --no-progress "${DOCKER_IMAGE_NAME}"
+
+set +e
+
+$TRIVY_CMD image \
+--exit-code 1 \
+--severity CRITICAL \
+--no-progress \
+"${DOCKER_IMAGE_NAME}"
+
 EXIT_CODE=$?
 
+set -e
+
 echo ""
-if [[ "${EXIT_CODE}" == 1 ]]; then
-    echo "RESULT: FAILED — CRITICAL vulnerabilities found in ${DOCKER_IMAGE_NAME}"
-    echo "        Please update the base image or apply fixes before proceeding."
+
+if [[ "$EXIT_CODE" -eq 1 ]]; then
+    echo "RESULT: FAILED — CRITICAL vulnerabilities found"
     exit 1
 else
-    echo "RESULT: PASSED — No CRITICAL vulnerabilities found in ${DOCKER_IMAGE_NAME}"
+    echo "RESULT: PASSED — No CRITICAL vulnerabilities found"
 fi
