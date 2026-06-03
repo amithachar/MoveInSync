@@ -52,20 +52,20 @@ pipeline {
             }
         }
 
-        // ── 4. SonarQube ───────────────────────────────────
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         sh '''
-        //         docker run --rm \
-        //         -e SONAR_HOST_URL=http://57.180.26.114:9000 \
-        //         -e SONAR_LOGIN=$SONAR_TOKEN \
-        //         -v $(pwd):/usr/src \
-        //         sonarsource/sonar-scanner-cli \
-        //         -Dsonar.projectKey=test \
-        //         -Dsonar.sources=.
-        //         '''
-        //     }
-        // }
+        ── 4. SonarQube ───────────────────────────────────
+        stage('SonarQube Analysis') {
+            steps {
+                sh '''
+                docker run --rm \
+                -e SONAR_HOST_URL=http://52.66.76.231:9000 \
+                -e SONAR_LOGIN="92ff3f2b213a8f1bdcbccd72a266b34a98cd1cbc" \
+                -v $(pwd):/usr/src \
+                sonarsource/sonar-scanner-cli \
+                -Dsonar.projectKey=test \
+                -Dsonar.sources=.
+                '''
+            }
+        }
         // ── 5. Quality Gate ─────────────────────────────────
         // stage('Quality Gate') {
         //     steps {
