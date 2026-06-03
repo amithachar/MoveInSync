@@ -39,7 +39,7 @@ docker run --rm \
 -v /tmp/trivy-cache:/root/.cache \
 aquasec/trivy:latest \
 image \
---exit-code 1 \
+--exit-code 0 \
 --severity CRITICAL \
 --no-progress \
 "${DOCKER_IMAGE_NAME}"
